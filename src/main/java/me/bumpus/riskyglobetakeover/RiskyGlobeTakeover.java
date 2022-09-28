@@ -66,10 +66,10 @@ public final class RiskyGlobeTakeover extends JavaPlugin {
         }
     }
 
-    public void loadMap(String name){
+    public void loadMap(String name, int x, int y, int z){
         SaveFile file = new SaveFile(this, name);
         FileConfiguration config = file.getConfig();
-        Map map = new Map(name);
+        Map map = new Map(name, x, y, z);
         Continent currentCont;
         Territory currentTerr;
 
@@ -77,11 +77,13 @@ public final class RiskyGlobeTakeover extends JavaPlugin {
             currentCont = new Continent(continent, name);
             map.getContinents().put(continent, currentCont);
             for(String territory : config.getConfigurationSection(continent).getKeys(false)){
-                currentTerr = new Territory(territory, config.getInt(continent + "." + territory + ".x"),
-                        config.getInt(continent + "." + territory + ".y"),
-                        config.getInt(continent + "." + territory + ".z"),
+                currentTerr = new Territory(territory,
+                        config.getInt(continent + "." + territory + ".dx"),
+                        config.getInt(continent + "." + territory + ".dy"),
+                        config.getInt(continent + "." + territory + ".dz"),
                         config.getString(continent + "." + territory + ".identifier"));
                 currentTerr.setNeighborStrings((ArrayList<String>) config.getStringList(continent + "." + territory + ".neighbors"));
+                currentTerr.setAbsPos(map);
                 map.getContinents().get(continent).getTerritories().put(territory, currentTerr);
             }
         }

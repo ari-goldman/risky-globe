@@ -10,22 +10,22 @@ public class Territory {
     String name;
     private ArrayList<Territory> neighbors;
     ArrayList<String> neighborStrings;
-    int pos[] = new int[3];
+    int[] pos = new int[3];
+    int[] absPos = new int[3];
     UUID owner;
     UUID identifier;
     String path;
     int troops;
     boolean blizzard;
 
-    public Territory(String name, int x, int y, int z, String path){
+    public Territory(String name, int dx, int dy, int dz, String path){
 
 
         this.path = path + "." + name;
         this.name = name;
-        pos[0] = x;
-        pos[1] = y;
-        pos[2] = z;
-
+        pos[0] = dx;
+        pos[1] = dy;
+        pos[2] = dz;
         neighbors = new ArrayList<>();
     }
 
@@ -54,9 +54,9 @@ public class Territory {
     public void writeToFile(FileConfiguration config, String path){
         path = path + "." + name;
         config.set(path + ".identifier", this.path);
-        config.set(path + ".x", pos[0]);
-        config.set(path + ".y", pos[1]);
-        config.set(path + ".z", pos[2]);
+        config.set(path + ".dx", pos[0]);
+        config.set(path + ".dy", pos[1]);
+        config.set(path + ".dz", pos[2]);
 
         if(neighbors.isEmpty()) return;
 
@@ -67,6 +67,16 @@ public class Territory {
         }
         config.set(path + ".neighbors", neighborStrings);
     }
+
+    public void setAbsPos(Map map){
+        int[] mapPos = map.getPos();
+        absPos[0] = pos[0] + mapPos[0];
+        absPos[1] = pos[1] + mapPos[1];
+        absPos[2] = pos[2] + mapPos[2];
+
+    }
+
+    public int[] getAbsPos(){ return absPos; }
 
     public void addNeighbor(Territory territory){
         neighbors.add(territory);

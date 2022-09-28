@@ -1,6 +1,7 @@
 package me.bumpus.riskyglobetakeover.commands;
 
 import me.bumpus.riskyglobetakeover.Continent;
+import me.bumpus.riskyglobetakeover.Map;
 import me.bumpus.riskyglobetakeover.RiskyGlobeTakeover;
 import me.bumpus.riskyglobetakeover.Territory;
 import org.bukkit.Location;
@@ -28,11 +29,19 @@ public class TerritoryCommand implements CommandExecutor {
         }
 
         Player p = (Player) sender;
-        Location location = p.getLocation();
+        Location l = p.getLocation();
 
         if(args.length == 4){
             if(args[0].equalsIgnoreCase("add")){
-                plugin.getMaps().get(args[1]).getContinents().get(args[2]).addTerritory(new Territory(args[3], location.getBlockX(), location.getBlockY(), location.getBlockZ(), args[1] + "." + args[2]));
+                Map map = plugin.getMaps().get(args[1]);
+                Continent continent = map.getContinents().get(args[2]);
+
+                continent.addTerritory(new Territory(args[3],
+                        l.getBlockX() - map.getX(),
+                        l.getBlockY() - map.getY(),
+                        l.getBlockZ() - map.getZ(),
+                        args[1] + "." + args[2]));
+                continent.getTerritories().get(args[3]).setAbsPos(map);
                 plugin.getLogger().warning("Territory \"" + args[1] + "." + args[2] + "." + args[3] + "\" created!");
             }else if(args[0].equalsIgnoreCase("delete")){
                 plugin.getMaps().get(args[1]).getContinents().get(args[2]).removeTerritory(args[3]);

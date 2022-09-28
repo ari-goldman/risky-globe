@@ -55,7 +55,7 @@ public class GameManager {
 
     public void particleBetween(Territory one, Territory two){
         for(float i = 0; i < 1; i += 0.09){
-            double[] pos = lerpedPosition(i, one.getPos(), two.getPos());
+            double[] pos = lerpedPosition(i, one.getAbsPos(), two.getAbsPos());
             world.spawnParticle(Particle.CLOUD, pos[0], pos[1], pos[2], 4, 0, 0, 0, 0);
         }
     }
