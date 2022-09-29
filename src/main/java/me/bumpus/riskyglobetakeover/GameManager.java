@@ -1,5 +1,6 @@
 package me.bumpus.riskyglobetakeover;
 
+import me.bumpus.riskyglobetakeover.other.PColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -8,18 +9,70 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class GameManager {
     boolean blizzard;
     boolean fog;
 
-    RiskyGlobeTakeover plugin;
-    World world;
+    static RiskyGlobeTakeover plugin;
+    ArrayList<GamePlayer> players;
+    static World world;
     Map map;
 
     public GameManager(RiskyGlobeTakeover plugin){
         this.plugin = plugin;
+        players = new ArrayList<>();
+    }
+
+//    public void createPhysicalMap(){
+//        for(Continent continent : map.getContinents()){
+//            for()
+//        }
+//    }
+
+    public void assignColors(){
+        ArrayList<PColor> colors = new ArrayList<>();
+        colors.add(PColor.RED);
+        colors.add(PColor.ORANGE);
+        colors.add(PColor.YELLOW);
+        colors.add(PColor.GREEN);
+        colors.add(PColor.BLUE);
+        colors.add(PColor.PURPLE);
+        Collections.shuffle(colors);;
+
+        for(int i = 0; i < players.size(); i++){
+            players.get(i).setColor(colors.get(i));
+        }
+    }
+
+    public void setBlizzards(int amt){
+
+        for(String contString : map.getContinents().keySet()){
+            for(String terrString : map.getContinents().get(contString).getTerritories().keySet()){
+                map.getContinents().get(contString).getTerritories().get(terrString).setBlizzard(false);
+            }
+        }
+
+        while(amt > 0){
+            Continent continent = map.getContinents()
+                    .get(new ArrayList<String>(map
+                            .getContinents()
+                            .keySet())
+                            .get((int)(Math.random()*map.getContinents().keySet().size())));
+            Territory territory = continent.getTerritories()
+                    .get(new ArrayList<String>(continent
+                            .getTerritories()
+                            .keySet())
+                            .get((int)(Math.random()*continent.getTerritories().keySet().size())));
+            if(!territory.getBlizzard()){
+                territory.setBlizzard(true);
+                amt--;
+            }
+
+
+        }
     }
 
     public void setWorld(World world) {
@@ -27,11 +80,24 @@ public class GameManager {
         plugin.getLogger().info("World set to " + this.world.getName());
     }
 
-
-
     public void loadMap(Map map){
         this.map = map;
         plugin.getLogger().info("Map set to " + map.getName());
+    }
+
+    public void exploreTerritories(int distance){
+        HashMap<String, Continent> continents = map.getContinents();
+        HashMap<String, Territory> territories;
+        for(String contKey : continents.keySet()){
+            territories = continents.get(contKey).getTerritories();
+            for(String terrKey : territories.keySet()){
+                territories.get(terrKey).explore(distance, map);
+            }
+        }
+    }
+
+    public void exploreTerritories(){
+        exploreTerritories(25);
     }
 
     public void displayConnects(){

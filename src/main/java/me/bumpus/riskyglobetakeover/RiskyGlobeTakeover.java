@@ -29,6 +29,9 @@ public final class RiskyGlobeTakeover extends JavaPlugin {
         this.saveDefaultConfig();
 
         getCommand("testsaves").setExecutor(new TestSaves(this));
+        getCommand("testexplorer").setExecutor(new TestExplorer(this));
+
+        getCommand("explore").setExecutor(new ExploreCommand(this));
 
         getCommand("map").setExecutor(new MapCommand(this));
         getCommand("map").setTabCompleter(new MapTab());
@@ -56,6 +59,14 @@ public final class RiskyGlobeTakeover extends JavaPlugin {
 
     public HashMap<UUID, SaveFile> getPlayerSaves() {
         return playerSaves;
+    }
+
+    public void exploreTerritories(){
+        manager.exploreTerritories();
+    }
+
+    public void exploreTerritories(int dist){
+        manager.exploreTerritories(dist);
     }
 
     public void saveMaps(){

@@ -36,9 +36,9 @@ public class Continent {
     }
 
     public boolean checkBonus(){
-        UUID player = territories.get(0).getOwner();
+        UUID player = territories.get(0).getOwner().getP().getUniqueId();
         for(Territory territory : territories.values()){
-            if(!player.equals(territory.getOwner())) return false;
+            if(!player.equals(territory.getOwner().getP().getUniqueId())) return false;
         }
         return true;
     }
