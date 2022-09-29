@@ -1,0 +1,28 @@
+name: Risky-Globe-Takeover
+version: '${project.version}'
+main: me.bumpus.riskyglobetakeover.RiskyGlobeTakeover
+api-version: 1.19
+
+commands:
+  setgameworld:
+    usage: "/<command>"
+  savemaps:
+    usage: "/<command>"
+  loadmap:
+    usage: "/<command>"
+  displayconnects:
+    usage: "/<command>"
+  map:
+    usage: "/<command> [add|delete] <map>"
+  continent:
+    usage: "/<command> [add|delete] <map> <continent>"
+  territory:
+    usage: "/<command> [add|delete] <map> <continent> <territory>"
+  connect:
+    usage: "/<command> <map> <territoryOne> <territoryTwo>"
+  testsaves:
+    usage: "/<command>"
+  testexplorer:
+    usage: "/<command> <distance>"
+  explore:
+    usage: "/<command> [distance]"
